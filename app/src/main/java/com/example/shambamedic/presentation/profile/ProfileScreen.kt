@@ -3,6 +3,7 @@ package com.example.shambamedic.presentation.profile
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
@@ -21,7 +22,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.shambamedic.R
+import com.example.shambamedic.presentation.auth.LanguageToggle
 import com.example.shambamedic.presentation.common.getAppLocale
+import com.example.shambamedic.presentation.common.setAppLocale
 import com.example.shambamedic.presentation.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -112,10 +115,34 @@ fun ProfileScreen(
                 // it would show stale/wrong data here.
                 val context = LocalContext.current
                 val isSwahili = getAppLocale(context) == "sw"
-                ProfileInfoRow(
-                    label = stringResource(R.string.profile_language_label),
-                    value = if (isSwahili) stringResource(R.string.language_swahili) else stringResource(R.string.language_english)
-                )
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(R.string.profile_language_label),
+                        fontSize = 14.sp,
+                        color = Color.Gray
+                    )
+                    Row(
+                        modifier = Modifier
+                            .background(primaryGreen, RoundedCornerShape(8.dp))
+                            .padding(4.dp)
+                    ) {
+                        LanguageToggle("EN", !isSwahili) {
+                            setAppLocale(context, "en")
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        LanguageToggle("SW", isSwahili) {
+                            setAppLocale(context, "sw")
+                        }
+                    }
+                }
+                HorizontalDivider(color = Color.LightGray.copy(alpha = 0.5f))
 
                 Spacer(modifier = Modifier.weight(1f))
 
@@ -129,18 +156,4 @@ fun ProfileScreen(
             }
         }
     }
-}
-
-@Composable
-private fun ProfileInfoRow(label: String, value: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(text = label, fontSize = 14.sp, color = Color.Gray)
-        Text(text = value, fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color.DarkGray)
-    }
-    HorizontalDivider(color = Color.LightGray.copy(alpha = 0.5f))
 }
