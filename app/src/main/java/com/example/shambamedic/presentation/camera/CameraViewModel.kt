@@ -65,7 +65,12 @@ class CameraViewModel @Inject constructor(
             result.onSuccess { classification ->
                 val isLowConfidence = classification.confidenceScore < Constants.MIN_CONFIDENCE_THRESHOLD
 
-                if (isLowConfidence && _uiState.value.attemptCount >= 1) {
+                if (classification.isAmbiguous) {
+                    // The model had no real signal within this crop (a tie, not a genuine
+                    // low confidence) - retaking won't resolve an array-order tie-break, so
+                    // send straight to expert review instead of showing a fake label.
+                    escalateForReview(classification)
+                } else if (isLowConfidence && _uiState.value.attemptCount >= 1) {
                     // Second consecutive low-confidence attempt on this leaf: escalate instead of retaking again.
                     escalateForReview(classification)
                 } else {

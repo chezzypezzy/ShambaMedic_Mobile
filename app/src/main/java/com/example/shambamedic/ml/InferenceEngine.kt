@@ -35,6 +35,13 @@ class InferenceEngine @Inject constructor(
     private val inferenceDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
     private val inferenceMutex = Mutex()
 
+    // Candidate scores span many orders of magnitude (1.0 down to ~1e-37), so a fixed
+    // absolute epsilon like 1e-10 would swallow genuinely-differentiated low scores that
+    // just happen to live below that magnitude (e.g. 2.5e-14 vs 3.8e-16 is a real ~65x
+    // difference, not a tie). Observed real ties are exact float32 underflow to 0.0, not
+    // near-equality, so ties are detected via exact equality instead of a magic epsilon.
+    private val tieEpsilon = 0f
+
     init {
         initializeInterpreter()
     }
@@ -102,6 +109,15 @@ class InferenceEngine @Inject constructor(
                     return@withLock Result.failure(Exception("No plant disease detected. Please capture a clear image of a diseased crop leaf."))
                 }
 
+                // A genuine tie among the crop-filtered candidates (all within tieEpsilon of
+                // the top score) means maxIndex was picked by array order, not by a real
+                // signal distinguishing it from the other candidates - e.g. all-zero scores
+                // when the model has no confident match within this crop. This is distinct
+                // from a genuine low-but-real confidence score, where exactly one candidate
+                // is unambiguously highest even if its value is small.
+                val tieCount = validIndices.count { idx -> kotlin.math.abs(scores[idx] - confidence) <= tieEpsilon }
+                val isAmbiguous = tieCount > 1
+
                 val displayName = ModelLabels.getDisplayName(label)
                 val detectedCropType = ModelLabels.getCropTypeFromLabel(label)
                 val severity = ClassificationResult.calculateSeverity(confidence)
@@ -112,7 +128,8 @@ class InferenceEngine @Inject constructor(
                         rawLabel = label,
                         confidenceScore = confidence,
                         cropType = detectedCropType,
-                        severity = severity
+                        severity = severity,
+                        isAmbiguous = isAmbiguous
                     )
                 )
             } catch (e: Exception) {
