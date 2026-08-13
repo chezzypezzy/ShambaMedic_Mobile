@@ -1,0 +1,9 @@
+- [x] Implement Results and History features
+    - [x] Implement `ResultsViewModel.kt` and `ResultsScreen.kt`
+    - [x] Implement `HistoryViewModel.kt` and `HistoryScreen.kt`
+    - [x] Implement `NetworkMonitor.kt` utility
+    - [x] Wire all screens in `NavGraph.kt`
+- [x] Fix Inference and Mapping bugs
+    - [x] Fix MobileNetV2 preprocessing normalization ([-1, 1])
+    - [x] Fix `diseaseId` lookup by adding `rawLabel` to `ClassificationResult`
+- [x] Verify build with `./gradlew assembleDebug`

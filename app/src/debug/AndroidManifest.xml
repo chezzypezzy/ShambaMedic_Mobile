@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Debug-only override, merged only into debug builds: allows plain-HTTP traffic so
+         BuildConfig.BASE_URL can point at a local dev backend (e.g. http://10.0.2.2:8000/
+         or a LAN IP) without the platform's default cleartext block getting in the way.
+         Release builds do not get this and remain HTTPS-only. -->
+    <application android:usesCleartextTraffic="true" />
+
+</manifest>

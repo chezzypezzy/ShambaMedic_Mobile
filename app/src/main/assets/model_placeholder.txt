@@ -1,0 +1,3 @@
+Place shambamedic_model.tflite in this directory.
+Download from: https://www.kaggle.com/models/google/mobilenet-v2/tfLite/classification/1
+Rename to shambamedic_model.tflite

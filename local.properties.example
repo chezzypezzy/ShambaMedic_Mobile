@@ -1,0 +1,20 @@
+## Template for local.properties, which is gitignored (machine-specific config).
+# Copy this file to local.properties and fill in real values for your machine.
+
+# Location of the Android SDK.
+sdk.dir=/path/to/Android/Sdk
+
+# REQUIRES EXTERNAL SETUP: must match the backend's SYNC_API_KEY value from
+# backend/.env - get this value from whoever manages the backend deployment
+# before sync will authenticate successfully.
+sync.api.key=REPLACE_WITH_BACKEND_SYNC_API_KEY
+
+# Backend base URL used by DEBUG builds only. Defaults to the Render deployment
+# (production/demo target) if this key is omitted entirely, so a fresh checkout
+# still points somewhere sensible without requiring local backend setup - see
+# app/build.gradle.kts. RELEASE builds always target the hosted backend and
+# ignore this value entirely.
+#
+# For local backend testing against the Android emulator, use:
+# base.url=http://10.0.2.2:8000/
+base.url=https://shambamedic-backend.onrender.com/

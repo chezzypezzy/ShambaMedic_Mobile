@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "18804947234",
+    "project_id": "shambamedic",
+    "storage_bucket": "shambamedic.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:18804947234:android:17fd50171ef1f61f680d7b",
+        "android_client_info": {
+          "package_name": "com.example.shambamedic"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxT81_hi2ZbZgrgZJrPTFbjbtdfAP3i04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
