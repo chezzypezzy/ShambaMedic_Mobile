@@ -2,4 +2,15 @@
 <resources>
 
     <style name="Theme.ShambaMedic" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <!-- Shown by installSplashScreen() from MainActivity.onCreate() until the app is
+         ready to draw. windowSplashScreenAnimatedIcon already has the white circular
+         badge baked in (matching the Auth screen header) so it reads clearly against
+         the green background on every API level, not just where
+         windowSplashScreenIconBackgroundColor is supported (API 31+). -->
+    <style name="Theme.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/primary_green</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_icon</item>
+        <item name="postSplashScreenTheme">@style/Theme.ShambaMedic</item>
+    </style>
 </resources>

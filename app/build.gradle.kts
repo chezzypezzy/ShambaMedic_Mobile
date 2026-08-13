@@ -105,6 +105,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.core.splashscreen)
 
     // Hilt
     implementation(libs.hilt.android)
