@@ -1,27 +1,28 @@
 package com.example.shambamedic.presentation.history
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.shambamedic.R
 import com.example.shambamedic.data.local.dao.DiseaseDao
 import com.example.shambamedic.data.local.dao.EscalationDao
 import com.example.shambamedic.data.repository.ScanRepository
 import com.example.shambamedic.data.repository.UserRepository
 import com.example.shambamedic.domain.model.Scan
-import com.example.shambamedic.presentation.common.cropDisplayName
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class ScanWithDiseaseName(
     val scan: Scan,
-    val diseaseName: String,
+    // The specific disease name from the DB (locale-independent, diagnosis content is
+    // English-only by design) - null when the scan has no disease record, i.e. it's
+    // either healthy or its status is a placeholder the UI resolves from
+    // [escalationStatus] via stringResource() so it stays locale-reactive.
+    val diseaseName: String?,
     // null = never escalated; otherwise the related Escalation's "pending"/"resolved" status.
     val escalationStatus: String?
 )
@@ -39,8 +40,7 @@ class HistoryViewModel @Inject constructor(
     private val scanRepository: ScanRepository,
     private val userRepository: UserRepository,
     private val diseaseDao: DiseaseDao,
-    private val escalationDao: EscalationDao,
-    @ApplicationContext private val context: Context
+    private val escalationDao: EscalationDao
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HistoryUiState())
@@ -59,18 +59,19 @@ class HistoryViewModel @Inject constructor(
             return
         }
 
-        scanRepository.getScanHistory(user.userId).collect { list ->
-            val scansWithNames = list.map { scan ->
-                val escalationStatus = escalationDao.getEscalationByScanId(scan.scanId)?.status
-                val diseaseName = when (escalationStatus) {
-                    "pending" -> context.getString(R.string.status_awaiting_expert_review)
-                    "resolved" -> context.getString(R.string.status_expert_diagnosis_received)
-                    else -> scan.diseaseId?.let { diseaseId ->
-                        diseaseDao.getDiseaseById(diseaseId)?.diseaseName
-                    } ?: context.getString(R.string.status_healthy_crop, cropDisplayName(context, scan.cropType))
+        combine(
+            scanRepository.getScanHistory(user.userId),
+            escalationDao.getAllEscalationsForUser(user.userId)
+        ) { scans, escalations ->
+            val escalationByScanId = escalations.associateBy { it.scanId }
+            scans.map { scan ->
+                val escalationStatus = escalationByScanId[scan.scanId]?.status
+                val diseaseName = scan.diseaseId?.let { diseaseId ->
+                    diseaseDao.getDiseaseById(diseaseId)?.diseaseName
                 }
                 ScanWithDiseaseName(scan = scan, diseaseName = diseaseName, escalationStatus = escalationStatus)
             }
+        }.collect { scansWithNames ->
             _uiState.update { it.copy(scans = scansWithNames, isLoading = false) }
             updateFilteredScans()
         }
@@ -93,6 +94,9 @@ class HistoryViewModel @Inject constructor(
             }
             "awaiting_review" -> current.scans.filter {
                 it.escalationStatus == "pending"
+            }
+            "diagnosis_received" -> current.scans.filter {
+                it.escalationStatus == "resolved"
             }
             else -> current.scans
         }

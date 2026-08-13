@@ -102,6 +102,8 @@
     <string name="empty_scans_pending">Hakuna uchunguzi unaosubiri.\nUchunguzi wote umesawazishwa na wingu.</string>
     <!-- Generated translation, not from user's starter list - flag for native-speaker review. -->
     <string name="empty_scans_awaiting_review">Hakuna uchunguzi unaosubiri ukaguzi.\nUchunguzi wako wote tayari umegunduliwa.</string>
+    <!-- Generated translation, not from user's starter list - flag for native-speaker review. -->
+    <string name="empty_scans_diagnosis_received">Hakuna uchunguzi wa mtaalamu bado.\nMajibu kutoka kwa mtaalamu wa mimea yataonekana hapa.</string>
     <string name="empty_scans_filtered">Hakuna uchunguzi wa %1$s uliopatikana.\nJaribu kuchagua kichujio kingine.</string>
     <string name="sync_status_synchronized">Imesawazishwa</string>
 

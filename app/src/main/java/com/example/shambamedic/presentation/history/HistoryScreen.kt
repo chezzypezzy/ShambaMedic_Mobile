@@ -76,7 +76,8 @@ fun HistoryScreen(
             "potato" to stringResource(R.string.crop_potato),
             "tomato" to stringResource(R.string.crop_tomato),
             "pending" to stringResource(R.string.filter_pending_sync),
-            "awaiting_review" to stringResource(R.string.status_awaiting_expert_review)
+            "awaiting_review" to stringResource(R.string.status_awaiting_expert_review),
+            "diagnosis_received" to stringResource(R.string.status_expert_diagnosis_received)
         )
 
         Column(modifier = Modifier.padding(paddingValues).fillMaxSize()) {
@@ -111,6 +112,7 @@ fun HistoryScreen(
                     "all" -> stringResource(R.string.empty_scans_all)
                     "pending" -> stringResource(R.string.empty_scans_pending)
                     "awaiting_review" -> stringResource(R.string.empty_scans_awaiting_review)
+                    "diagnosis_received" -> stringResource(R.string.empty_scans_diagnosis_received)
                     else -> stringResource(R.string.empty_scans_filtered, cropDisplayName(uiState.selectedFilter))
                 }
                 Box(modifier = Modifier.fillMaxSize().padding(16.dp), contentAlignment = Alignment.Center) {
@@ -148,6 +150,14 @@ fun HistoryScreen(
 private fun ScanHistoryCard(scanWithDisease: ScanWithDiseaseName, onClick: () -> Unit) {
     val scan = scanWithDisease.scan
     val primaryGreen = Color(0xFF2E7D32)
+    // Resolved at render time (not cached in the ViewModel) so it recomposes immediately
+    // when the in-app locale changes, same as the filter chips and empty states.
+    val displayName = when {
+        scanWithDisease.escalationStatus == "pending" -> stringResource(R.string.status_awaiting_expert_review)
+        scanWithDisease.escalationStatus == "resolved" -> stringResource(R.string.status_expert_diagnosis_received)
+        scanWithDisease.diseaseName != null -> scanWithDisease.diseaseName
+        else -> stringResource(R.string.status_healthy_crop, cropDisplayName(scan.cropType))
+    }
     Card(
         modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
@@ -175,7 +185,7 @@ private fun ScanHistoryCard(scanWithDisease: ScanWithDiseaseName, onClick: () ->
 
             // CONTENT
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(text = scanWithDisease.diseaseName, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, color = Color.DarkGray)
+                Text(text = displayName, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, color = Color.DarkGray)
                 Text(text = formatTimestamp(scan.scanTimestamp), fontSize = 12.sp, color = Color.Gray)
 
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
