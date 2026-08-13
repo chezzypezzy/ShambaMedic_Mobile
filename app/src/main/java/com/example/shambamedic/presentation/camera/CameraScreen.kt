@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -34,6 +35,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.shambamedic.R
+import com.example.shambamedic.presentation.common.cropDisplayName
 import com.example.shambamedic.presentation.navigation.Screen
 import com.example.shambamedic.util.Constants
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -115,7 +118,7 @@ private fun LiveCameraView(
                 onClick = onBack,
                 modifier = Modifier.background(Color.Black.copy(alpha = 0.3f), CircleShape)
             ) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.content_desc_back), tint = Color.White)
             }
             Spacer(modifier = Modifier.weight(1f))
             Surface(
@@ -123,7 +126,7 @@ private fun LiveCameraView(
                 shape = RoundedCornerShape(20.dp)
             ) {
                 Text(
-                    text = cropType.replaceFirstChar { it.uppercase() },
+                    text = cropDisplayName(cropType),
                     color = Color.White,
                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                     style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold)
@@ -140,7 +143,7 @@ private fun LiveCameraView(
                         .border(2.dp, Color.White, RoundedCornerShape(16.dp)) // Note: Dashed border needs custom canvas drawing in Compose, simplified to solid for now
                 )
                 Text(
-                    text = "Place diseased leaf within frame", // TODO: Add Swahili
+                    text = stringResource(R.string.camera_frame_hint),
                     color = Color.White,
                     fontSize = 13.sp,
                     modifier = Modifier.padding(top = 12.dp),
@@ -178,7 +181,7 @@ private fun LiveCameraView(
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     CircularProgressIndicator(color = Color.White)
                     Text(
-                        text = "Analysing leaf...", // TODO: Add Swahili
+                        text = stringResource(R.string.camera_analysing),
                         color = Color.White,
                         fontSize = 16.sp,
                         modifier = Modifier.padding(top = 16.dp)
@@ -312,14 +315,13 @@ private fun ReviewScreen(
                             tint = Color(0xFFF57F17)
                         )
                         Text(
-                            text = "Sent for Expert Review", // TODO: Add Swahili
+                            text = stringResource(R.string.escalated_title),
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.DarkGray
                         )
                         Text(
-                            text = "We couldn't classify this leaf with confidence. " +
-                                "A botanist will review your photo and respond soon.", // TODO: Add Swahili
+                            text = stringResource(R.string.escalated_message),
                             fontSize = 14.sp,
                             color = Color.Gray,
                             textAlign = TextAlign.Center
@@ -331,7 +333,7 @@ private fun ReviewScreen(
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E7D32)),
                             shape = RoundedCornerShape(26.dp)
                         ) {
-                            Text("Scan Another Leaf", color = Color.White) // TODO: Add Swahili
+                            Text(stringResource(R.string.action_scan_another_leaf), color = Color.White)
                         }
                     }
                 } else if (uiState.isLoading) {
@@ -342,9 +344,9 @@ private fun ReviewScreen(
                     ) {
                         CircularProgressIndicator(modifier = Modifier.size(32.dp))
                         Text(
-                            text = "  Analysing...", // TODO: Add Swahili
+                            text = stringResource(R.string.camera_analysing_short),
                             fontSize = 16.sp,
-                            modifier = Modifier.padding(start = 12.dp)
+                            modifier = Modifier.padding(start = 20.dp)
                         )
                     }
                 } else if (uiState.classificationResult != null) {
@@ -366,8 +368,7 @@ private fun ReviewScreen(
                                 tint = Color(0xFFF57F17)
                             )
                             Text(
-                                text = "Low confidence result. For a more accurate diagnosis, " +
-                                    "please retake with better lighting and focus.", // TODO: Add Swahili
+                                text = stringResource(R.string.low_confidence_warning),
                                 fontSize = 13.sp,
                                 color = Color(0xFF7A5B00)
                             )
@@ -377,7 +378,7 @@ private fun ReviewScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Column(modifier = Modifier.weight(1f)) {
                             Text(text = result.diseaseLabel, fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                            Text(text = result.cropType.replaceFirstChar { it.uppercase() }, fontSize = 13.sp, color = Color.Gray)
+                            Text(text = cropDisplayName(result.cropType), fontSize = 13.sp, color = Color.Gray)
                         }
 
                         val severityColor = when (result.severity) {
@@ -406,7 +407,7 @@ private fun ReviewScreen(
                     )
 
                     Text(
-                        text = "Confidence: ${(result.confidenceScore * 100).toInt()}%", // TODO: Add Swahili
+                        text = stringResource(R.string.confidence_percent, (result.confidenceScore * 100).toInt()),
                         fontSize = 13.sp,
                         color = Color.Gray
                     )
@@ -414,7 +415,8 @@ private fun ReviewScreen(
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         OutlinedButton(onClick = onRetake, modifier = Modifier.weight(1f)) {
                             Icon(Icons.Default.Refresh, contentDescription = null, modifier = Modifier.size(18.dp))
-                            Text(" Retake") // TODO: Add Swahili
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(stringResource(R.string.action_retake))
                         }
                         Button(
                             onClick = onViewResults,
@@ -423,7 +425,8 @@ private fun ReviewScreen(
                             enabled = uiState.savedScanId != null && uiState.savedScanId!!.isNotEmpty()
                         ) {
                             Icon(Icons.Default.CheckCircle, contentDescription = null, modifier = Modifier.size(18.dp))
-                            Text(" View Results") // TODO: Add Swahili
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(stringResource(R.string.action_view_results))
                         }
                     }
                 } else if (uiState.error != null) {
@@ -440,7 +443,7 @@ private fun ReviewScreen(
                         )
                         Text(text = uiState.error, textAlign = TextAlign.Center, fontSize = 15.sp)
                         Button(onClick = onRetake) {
-                            Text("Retake") // TODO: Add Swahili
+                            Text(stringResource(R.string.action_retake))
                         }
                     }
                 }
@@ -458,9 +461,9 @@ private fun PermissionScreen(onRequestPermission: () -> Unit) {
     ) {
         Icon(Icons.Default.CameraAlt, contentDescription = null, modifier = Modifier.size(64.dp), tint = Color.Gray)
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "Camera permission is required", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+        Text(text = stringResource(R.string.permission_required_title), fontWeight = FontWeight.Bold, fontSize = 18.sp)
         Text(
-            text = "to scan crop leaves for disease detection",
+            text = stringResource(R.string.permission_required_body),
             color = Color.Gray,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(top = 8.dp)
@@ -470,7 +473,7 @@ private fun PermissionScreen(onRequestPermission: () -> Unit) {
             onClick = onRequestPermission,
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E7D32))
         ) {
-            Text("Grant Permission")
+            Text(stringResource(R.string.action_grant_permission))
         }
     }
 }

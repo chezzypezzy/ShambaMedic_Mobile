@@ -16,12 +16,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.shambamedic.R
+import com.example.shambamedic.presentation.common.cropDisplayName
 import com.example.shambamedic.presentation.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,7 +40,7 @@ fun HistoryScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Scan History", fontWeight = FontWeight.Bold, color = Color.White) }, // TODO: Add Swahili
+                title = { Text(stringResource(R.string.title_scan_history), fontWeight = FontWeight.Bold, color = Color.White) },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = primaryGreen)
             )
         },
@@ -49,24 +52,32 @@ fun HistoryScreen(
                         popUpTo(Screen.Home.route) { inclusive = true }
                     } },
                     icon = { Icon(Icons.Default.Home, contentDescription = null) },
-                    label = { Text("Home") } // TODO: Add Swahili
+                    label = { Text(stringResource(R.string.nav_home)) }
                 )
                 NavigationBarItem(
                     selected = true,
                     onClick = { },
                     icon = { Icon(Icons.Default.History, contentDescription = null) },
-                    label = { Text("History") } // TODO: Add Swahili
+                    label = { Text(stringResource(R.string.nav_history)) }
                 )
                 NavigationBarItem(
                     selected = false,
                     onClick = { navController.navigate(Screen.Profile.route) },
                     icon = { Icon(Icons.Default.Person, contentDescription = null) },
-                    label = { Text("Profile") } // TODO: Add Swahili
+                    label = { Text(stringResource(R.string.nav_profile)) }
                 )
             }
         },
         containerColor = backgroundGrey
     ) { paddingValues ->
+        val filters = listOf(
+            "all" to stringResource(R.string.filter_all),
+            "maize" to stringResource(R.string.crop_maize),
+            "potato" to stringResource(R.string.crop_potato),
+            "tomato" to stringResource(R.string.crop_tomato),
+            "pending" to stringResource(R.string.filter_pending_sync)
+        )
+
         Column(modifier = Modifier.padding(paddingValues).fillMaxSize()) {
             // FILTER ROW
             LazyRow(
@@ -77,14 +88,6 @@ fun HistoryScreen(
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                val filters = listOf(
-                    "all" to "All",
-                    "maize" to "Maize",
-                    "potato" to "Potato",
-                    "tomato" to "Tomato",
-                    "pending" to "Pending Sync"
-                )
-
                 items(filters) { filter ->
                     FilterChip(
                         selected = uiState.selectedFilter == filter.first,
@@ -104,18 +107,14 @@ fun HistoryScreen(
                 }
             } else if (uiState.filteredScans.isEmpty()) {
                 val emptyMessage = when (uiState.selectedFilter) {
-                    "all" -> "No scans yet.\nTap a crop on the " +
-                        "home screen to begin your first diagnosis."
-                    "pending" -> "No pending scans.\n" +
-                        "All scans have been synced to the cloud."
-                    else -> "No ${uiState.selectedFilter} scans " +
-                        "found.\nTry selecting a different filter."
+                    "all" -> stringResource(R.string.empty_scans_all)
+                    "pending" -> stringResource(R.string.empty_scans_pending)
+                    else -> stringResource(R.string.empty_scans_filtered, cropDisplayName(uiState.selectedFilter))
                 }
                 Box(modifier = Modifier.fillMaxSize().padding(16.dp), contentAlignment = Alignment.Center) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
                         Icon(Icons.Default.ImageSearch, contentDescription = null, modifier = Modifier.size(64.dp), tint = Color.Gray)
                         Text(
-                            // TODO: Add Swahili
                             emptyMessage,
                             color = Color.Gray,
                             fontSize = 14.sp,
@@ -178,11 +177,15 @@ private fun ScanHistoryCard(scanWithDisease: ScanWithDiseaseName, onClick: () ->
                 Text(text = formatTimestamp(scan.scanTimestamp), fontSize = 12.sp, color = Color.Gray)
 
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(text = "Confidence: ${(scan.confidenceScore * 100).toInt()}%", fontSize = 11.sp, color = Color.Gray)
+                    Text(text = stringResource(R.string.confidence_percent, (scan.confidenceScore * 100).toInt()), fontSize = 11.sp, color = Color.Gray)
 
                     val syncColor = if (scan.syncStatus == "synchronized") primaryGreen else Color.Gray
+                    val syncLabel = if (scan.syncStatus == "synchronized")
+                        stringResource(R.string.sync_status_synchronized)
+                    else
+                        stringResource(R.string.sync_status_pending)
                     Text(
-                        text = scan.syncStatus.replaceFirstChar { it.uppercase() },
+                        text = syncLabel,
                         fontSize = 11.sp,
                         color = syncColor
                     )

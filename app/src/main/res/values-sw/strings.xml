@@ -1,0 +1,116 @@
+<resources>
+    <!-- app_name and google_web_client_id intentionally not overridden: brand name and
+         OAuth client ID stay identical in every locale. -->
+
+    <!-- Common / shared across screens -->
+    <string name="app_tagline">Afya ya Mazao Mikononi Mwako</string>
+    <string name="nav_home">Nyumbani</string>
+    <string name="nav_history">Historia</string>
+    <string name="nav_profile">Wasifu</string>
+    <string name="action_retake">Piga Tena</string>
+    <string name="action_go_back">Rudi Nyuma</string>
+    <string name="action_logout">Toka</string>
+    <string name="content_desc_back">Rudi</string>
+    <string name="content_desc_notifications">Arifa</string>
+    <string name="content_desc_sync_now">Sawazisha Sasa</string>
+    <string name="crop_maize">Mahindi</string>
+    <string name="crop_potato">Viazi</string>
+    <string name="crop_tomato">Nyanya</string>
+    <string name="confidence_percent">Uhakika: %1$d%%</string>
+    <string name="confidence_score_label">Kiwango cha Uhakika</string>
+    <string name="severity_impact_label">Athari ya Ukali:</string>
+    <string name="recommended_treatments_title">Matibabu Yanayopendekezwa</string>
+    <string name="status_awaiting_expert_review">Inasubiri Ukaguzi wa Mtaalamu</string>
+    <string name="status_expert_diagnosis_received">Uchunguzi wa Mtaalamu Umepokewa</string>
+    <string name="sync_status_pending">Inasubiri Kusawazishwa</string>
+    <string name="action_scan_another_leaf">Chunguza Jani Lingine</string>
+
+    <!-- Auth screen -->
+    <string name="tab_login">Ingia</string>
+    <string name="tab_register">Jisajili</string>
+    <string name="label_full_name">Jina Kamili</string>
+    <string name="label_phone_number">Nambari ya Simu</string>
+    <string name="label_pin">PIN ya Tarakimu 4</string>
+    <string name="label_confirm_pin">Thibitisha PIN</string>
+    <string name="action_create_account">Fungua Akaunti</string>
+    <string name="prompt_no_account">Huna akaunti?</string>
+    <string name="prompt_has_account">Una akaunti tayari?</string>
+    <string name="divider_or">AU</string>
+    <string name="action_continue_google">Endelea na Google</string>
+    <string name="error_unexpected_credential">Aina ya utambulisho haitarajiwi</string>
+    <string name="error_google_signin_cancelled">Kuingia kwa Google kulighairiwa au kushindwa: %1$s</string>
+    <string name="error_google_signin_failed">Kuingia kwa Google kumeshindwa. Tafadhali jaribu tena.</string>
+    <string name="error_phone_required">Nambari ya simu inahitajika</string>
+    <string name="error_pin_required">PIN ya tarakimu 4 inahitajika</string>
+    <string name="error_name_required">Jina kamili linahitajika</string>
+    <string name="error_pin_mismatch">PIN hazifanani</string>
+    <string name="fallback_google_user_name">Mtumiaji wa Google</string>
+
+    <!-- Home screen -->
+    <string name="greeting_hello">Habari, %1$s</string>
+    <string name="home_subtitle">Chagua zao kuanza uchunguzi</string>
+    <string name="weekly_activity_title">Shughuli za Wiki Hii</string>
+    <string name="weekly_activity_empty">Hakuna uchunguzi bado wiki hii</string>
+    <string name="stat_diseases_found">Magonjwa Yaliyopatikana</string>
+    <string name="stat_healthy_scans">Uchunguzi wenye Afya</string>
+    <string name="stat_awaiting_review">Inasubiri Ukaguzi</string>
+    <string name="stat_most_common">Inayojulikana Zaidi</string>
+    <string name="ready_to_scan">Uko tayari kuchunguza zao?</string>
+    <string name="action_start_new_scan">Anza Uchunguzi Mpya</string>
+    <string name="recent_scans_title">Uchunguzi wa Hivi Karibuni</string>
+    <string name="action_view_all">Ona Zote</string>
+    <string name="select_crop_type">Chagua Aina ya Zao</string>
+    <string name="status_disease_detected">%1$s - Ugonjwa Umegunduliwa</string>
+    <string name="status_healthy_crop">%1$s Mwenye Afya</string>
+
+    <!-- Camera screen -->
+    <string name="camera_frame_hint">Weka jani lenye ugonjwa ndani ya fremu</string>
+    <string name="camera_analysing">Inachambua jani…</string>
+    <string name="camera_analysing_short">Inachambua…</string>
+    <string name="escalated_title">Imetumwa kwa Ukaguzi wa Mtaalamu</string>
+    <string name="escalated_message">Hatukuweza kutambua jani hili kwa uhakika. Mtaalamu wa mimea atakagua picha yako na kujibu hivi karibuni.</string>
+    <string name="low_confidence_warning">Matokeo yenye uhakika mdogo. Kwa uchunguzi sahihi zaidi, tafadhali piga picha tena kwa mwanga na mwelekeo bora.</string>
+    <string name="action_view_results">Angalia Matokeo</string>
+    <string name="permission_required_title">Ruhusa ya kamera inahitajika</string>
+    <string name="permission_required_body">kuchunguza majani ya mazao kwa ugunduzi wa magonjwa</string>
+    <string name="action_grant_permission">Ruhusu Ufikiaji</string>
+
+    <!-- Results screen -->
+    <string name="error_invalid_scan">Kumbukumbu batili ya uchunguzi</string>
+    <string name="title_diagnosis_result">Matokeo ya Uchunguzi</string>
+    <string name="botanist_assessment_label">Tathmini ya Mtaalamu wa Mimea:</string>
+    <string name="rated_consultation">Umekadiria ushauri huu</string>
+    <string name="awaiting_expert_review_body">Uchunguzi huu umetumwa kwa mtaalamu wa mimea kwa uchunguzi zaidi. Rudi hapa mara jibu litakapopokewa.</string>
+    <string name="sync_status_synced">Imesawazishwa na Wingu</string>
+    <string name="about_disease_title">Kuhusu Ugonjwa Huu</string>
+    <string name="symptoms_label">Dalili:</string>
+    <string name="healthy_crop_title">%1$s Inaonekana na Afya</string>
+    <string name="healthy_crop_body">Hakuna ugonjwa uliogunduliwa katika uchunguzi huu.</string>
+    <string name="how_was_consultation">Ushauri wako ulikuwaje?</string>
+    <string name="comment_hint_optional">Ongeza maoni (hiari)</string>
+    <string name="action_submit_rating">Wasilisha Ukadiriaji</string>
+    <string name="info_products">Bidhaa</string>
+    <string name="info_method">Njia</string>
+    <string name="info_dosage">Kipimo</string>
+    <string name="info_est_cost">Gharama Inayokadiriwa</string>
+
+    <!-- History screen -->
+    <string name="title_scan_history">Historia ya Uchunguzi</string>
+    <string name="filter_all">Zote</string>
+    <string name="filter_pending_sync">Inasubiri Kusawazishwa</string>
+    <string name="empty_scans_all">Hakuna uchunguzi bado.\nGusa zao kwenye skrini ya nyumbani kuanza uchunguzi wako wa kwanza.</string>
+    <string name="empty_scans_pending">Hakuna uchunguzi unaosubiri.\nUchunguzi wote umesawazishwa na wingu.</string>
+    <string name="empty_scans_filtered">Hakuna uchunguzi wa %1$s uliopatikana.\nJaribu kuchagua kichujio kingine.</string>
+    <string name="sync_status_synchronized">Imesawazishwa</string>
+
+    <!-- Profile screen -->
+    <string name="title_profile">Wasifu</string>
+    <string name="profile_language_label">Lugha</string>
+    <string name="language_english">Kiingereza</string>
+    <string name="language_swahili">Kiswahili</string>
+
+    <!-- Notifications screen -->
+    <string name="title_notifications">Arifa</string>
+    <string name="action_mark_all_read">Weka Zote Kama Zimesomwa</string>
+    <string name="empty_notifications">Hakuna arifa bado</string>
+</resources>

@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -31,7 +32,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.shambamedic.R
 import com.example.shambamedic.domain.model.Scan
+import com.example.shambamedic.presentation.common.cropDisplayName
 import com.example.shambamedic.presentation.navigation.Screen
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -70,7 +73,7 @@ fun HomeScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "ShambaMedic", // TODO: Add Swahili
+                        text = stringResource(R.string.app_name),
                         color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
@@ -82,7 +85,7 @@ fun HomeScreen(
                         }) {
                             Icon(
                                 imageVector = Icons.Default.Notifications,
-                                contentDescription = "Notifications", // TODO: Add Swahili
+                                contentDescription = stringResource(R.string.content_desc_notifications),
                                 tint = Color.White
                             )
                         }
@@ -112,7 +115,7 @@ fun HomeScreen(
                         } else {
                             Icon(
                                 imageVector = Icons.Default.Sync,
-                                contentDescription = "Sync now", // TODO: Add Swahili
+                                contentDescription = stringResource(R.string.content_desc_sync_now),
                                 tint = Color.White
                             )
                         }
@@ -120,7 +123,7 @@ fun HomeScreen(
                     IconButton(onClick = viewModel::logout) {
                         Icon(
                             imageVector = Icons.Default.ExitToApp,
-                            contentDescription = "Logout",
+                            contentDescription = stringResource(R.string.action_logout),
                             tint = Color.White
                         )
                     }
@@ -134,19 +137,19 @@ fun HomeScreen(
                     selected = true,
                     onClick = { },
                     icon = { Icon(Icons.Default.Home, contentDescription = null) },
-                    label = { Text("Home") } // TODO: Add Swahili
+                    label = { Text(stringResource(R.string.nav_home)) }
                 )
                 NavigationBarItem(
                     selected = false,
                     onClick = { navController.navigate(Screen.History.route) },
                     icon = { Icon(Icons.Default.History, contentDescription = null) },
-                    label = { Text("History") } // TODO: Add Swahili
+                    label = { Text(stringResource(R.string.nav_history)) }
                 )
                 NavigationBarItem(
                     selected = false,
                     onClick = { navController.navigate(Screen.Profile.route) },
                     icon = { Icon(Icons.Default.Person, contentDescription = null) },
-                    label = { Text("Profile") } // TODO: Add Swahili
+                    label = { Text(stringResource(R.string.nav_profile)) }
                 )
             }
         },
@@ -167,13 +170,13 @@ fun HomeScreen(
             ) {
                 Column {
                     Text(
-                        text = "Hello, ${uiState.userName}", // TODO: Add Swahili
+                        text = stringResource(R.string.greeting_hello, uiState.userName),
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.DarkGray
                     )
                     Text(
-                        text = "Select a crop to begin diagnosis", // TODO: Add Swahili
+                        text = stringResource(R.string.home_subtitle),
                         fontSize = 14.sp,
                         color = Color.Gray
                     )
@@ -208,14 +211,14 @@ fun HomeScreen(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Text(
-                        text = "This Week's Activity", // TODO: Add Swahili
+                        text = stringResource(R.string.weekly_activity_title),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
                     )
 
                     if (uiState.weeklyScanCounts.all { it == 0 }) {
                         Text(
-                            text = "No scans yet this week", // TODO: Add Swahili
+                            text = stringResource(R.string.weekly_activity_empty),
                             fontSize = 13.sp,
                             color = Color.Gray,
                             textAlign = TextAlign.Center,
@@ -272,14 +275,14 @@ fun HomeScreen(
                 StatCard(
                     icon = Icons.Default.Coronavirus,
                     value = "${uiState.totalDiseasesFound}",
-                    label = "Diseases Found", // TODO: Add Swahili
+                    label = stringResource(R.string.stat_diseases_found),
                     color = Color(0xFFB71C1C),
                     modifier = Modifier.weight(1f)
                 )
                 StatCard(
                     icon = Icons.Default.CheckCircle,
                     value = "${uiState.healthyScansCount}",
-                    label = "Healthy Scans", // TODO: Add Swahili
+                    label = stringResource(R.string.stat_healthy_scans),
                     color = Color(0xFF2E7D32),
                     modifier = Modifier.weight(1f)
                 )
@@ -294,14 +297,14 @@ fun HomeScreen(
                 StatCard(
                     icon = Icons.Default.HourglassEmpty,
                     value = "${uiState.pendingReviewCount}",
-                    label = "Awaiting Review", // TODO: Add Swahili
+                    label = stringResource(R.string.stat_awaiting_review),
                     color = Color(0xFFF57F17),
                     modifier = Modifier.weight(1f)
                 )
                 StatCard(
                     icon = Icons.Default.TrendingUp,
                     value = uiState.mostCommonDisease ?: "N/A",
-                    label = "Most Common", // TODO: Add Swahili
+                    label = stringResource(R.string.stat_most_common),
                     color = Color(0xFF1565C0),
                     isTextValue = true,
                     modifier = Modifier.weight(1f)
@@ -315,7 +318,7 @@ fun HomeScreen(
                     .padding(horizontal = 20.dp, vertical = 20.dp)
             ) {
                 Text(
-                    text = "Ready to scan a crop?", // TODO: Add Swahili
+                    text = stringResource(R.string.ready_to_scan),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -329,7 +332,7 @@ fun HomeScreen(
                     Icon(Icons.Default.CameraAlt, contentDescription = null, tint = Color.White, modifier = Modifier.size(22.dp))
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Start New Scan", // TODO: Add Swahili
+                        text = stringResource(R.string.action_start_new_scan),
                         color = Color.White,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
@@ -346,13 +349,13 @@ fun HomeScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Recent Scans", // TODO: Add Swahili
+                            text = stringResource(R.string.recent_scans_title),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold
                         )
                         TextButton(onClick = { navController.navigate(Screen.History.route) }) {
                             Text(
-                                text = "View All", // TODO: Add Swahili
+                                text = stringResource(R.string.action_view_all),
                                 fontSize = 13.sp,
                                 color = primaryGreen
                             )
@@ -384,7 +387,7 @@ fun HomeScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Text(
-                    text = "Select Crop Type", // TODO: Add Swahili
+                    text = stringResource(R.string.select_crop_type),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = androidx.compose.ui.text.style.TextAlign.Center,
@@ -416,8 +419,11 @@ fun HomeScreen(
                         }
                         Spacer(modifier = Modifier.width(12.dp))
                         Column {
-                            Text(text = crop.displayName, fontSize = 16.sp, fontWeight = FontWeight.Bold) // TODO: Add Swahili
-                            Text(text = crop.swahiliName, fontSize = 13.sp, color = Color.Gray, fontStyle = FontStyle.Italic) // TODO: Add Swahili
+                            // Deliberately shown together regardless of locale (not driven by
+                            // the language toggle) - a low-literacy-friendly bilingual label,
+                            // not a translatable-vs-untranslated gap.
+                            Text(text = crop.displayName, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                            Text(text = crop.swahiliName, fontSize = 13.sp, color = Color.Gray, fontStyle = FontStyle.Italic)
                         }
                         Spacer(modifier = Modifier.weight(1f))
                         Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Color.Gray, modifier = Modifier.size(20.dp))
@@ -465,10 +471,10 @@ private fun StatCard(
 private fun RecentScanRow(recentScan: RecentScanDisplay, onClick: () -> Unit) {
     val scan = recentScan.scan
     val label = when {
-        recentScan.escalationStatus == "pending" -> "Awaiting Expert Review" // TODO: Add Swahili
-        recentScan.escalationStatus == "resolved" -> "Expert Diagnosis Received" // TODO: Add Swahili
-        scan.diseaseId != null -> "${scan.cropType.replaceFirstChar { it.uppercase() }} - Disease Detected" // TODO: Add Swahili
-        else -> "Healthy ${scan.cropType.replaceFirstChar { it.uppercase() }}" // TODO: Add Swahili
+        recentScan.escalationStatus == "pending" -> stringResource(R.string.status_awaiting_expert_review)
+        recentScan.escalationStatus == "resolved" -> stringResource(R.string.status_expert_diagnosis_received)
+        scan.diseaseId != null -> stringResource(R.string.status_disease_detected, cropDisplayName(scan.cropType))
+        else -> stringResource(R.string.status_healthy_crop, cropDisplayName(scan.cropType))
     }
     val sdf = remember { SimpleDateFormat("MMM dd, HH:mm", Locale.getDefault()) }
 

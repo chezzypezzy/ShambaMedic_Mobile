@@ -17,12 +17,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.shambamedic.R
 import com.example.shambamedic.domain.model.Notification
 import com.example.shambamedic.presentation.navigation.Screen
 
@@ -40,16 +42,16 @@ fun NotificationsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Notifications", fontWeight = FontWeight.Bold, color = Color.White) }, // TODO: Add Swahili
+                title = { Text(stringResource(R.string.title_notifications), fontWeight = FontWeight.Bold, color = Color.White) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.content_desc_back), tint = Color.White)
                     }
                 },
                 actions = {
                     if (hasUnread) {
                         TextButton(onClick = { viewModel.markAllRead() }) {
-                            Text("Mark all read", color = Color.White, fontSize = 13.sp) // TODO: Add Swahili
+                            Text(stringResource(R.string.action_mark_all_read), color = Color.White, fontSize = 13.sp)
                         }
                     }
                 },
@@ -67,7 +69,7 @@ fun NotificationsScreen(
                 Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
                     Icon(Icons.Default.NotificationsNone, contentDescription = null, modifier = Modifier.size(64.dp), tint = Color.Gray)
                     Text(
-                        text = "No notifications yet", // TODO: Add Swahili
+                        text = stringResource(R.string.empty_notifications),
                         color = Color.Gray,
                         fontSize = 14.sp
                     )

@@ -1,4 +1,116 @@
 <resources>
-    <string name="app_name">ShambaMedic</string>
+    <string name="app_name" translatable="false">ShambaMedic</string>
     <string name="google_web_client_id" translatable="false">18804947234-sns0ucujkiicrfi0ktql2bsnmue966et.apps.googleusercontent.com</string>
+
+    <!-- Common / shared across screens -->
+    <string name="app_tagline">Crop Health in Your Hands</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_history">History</string>
+    <string name="nav_profile">Profile</string>
+    <string name="action_retake">Retake</string>
+    <string name="action_go_back">Go Back</string>
+    <string name="action_logout">Logout</string>
+    <string name="content_desc_back">Back</string>
+    <string name="content_desc_notifications">Notifications</string>
+    <string name="content_desc_sync_now">Sync now</string>
+    <string name="crop_maize">Maize</string>
+    <string name="crop_potato">Potato</string>
+    <string name="crop_tomato">Tomato</string>
+    <string name="confidence_percent">Confidence: %1$d%%</string>
+    <string name="confidence_score_label">Confidence Score</string>
+    <string name="severity_impact_label">Severity Impact:</string>
+    <string name="recommended_treatments_title">Recommended Treatments</string>
+    <string name="status_awaiting_expert_review">Awaiting Expert Review</string>
+    <string name="status_expert_diagnosis_received">Expert Diagnosis Received</string>
+    <string name="sync_status_pending">Pending sync</string>
+    <string name="action_scan_another_leaf">Scan Another Leaf</string>
+
+    <!-- Auth screen -->
+    <string name="tab_login">Login</string>
+    <string name="tab_register">Register</string>
+    <string name="label_full_name">Full Name</string>
+    <string name="label_phone_number">Phone Number</string>
+    <string name="label_pin">4-Digit PIN</string>
+    <string name="label_confirm_pin">Confirm PIN</string>
+    <string name="action_create_account">Create Account</string>
+    <string name="prompt_no_account">Don\'t have an account?</string>
+    <string name="prompt_has_account">Already have an account?</string>
+    <string name="divider_or">OR</string>
+    <string name="action_continue_google">Continue with Google</string>
+    <string name="error_unexpected_credential">Unexpected credential type</string>
+    <string name="error_google_signin_cancelled">Google sign-in was cancelled or failed: %1$s</string>
+    <string name="error_google_signin_failed">Google sign-in failed. Please try again.</string>
+    <string name="error_phone_required">Phone number required</string>
+    <string name="error_pin_required">4-digit PIN required</string>
+    <string name="error_name_required">Full name required</string>
+    <string name="error_pin_mismatch">PINs do not match</string>
+    <string name="fallback_google_user_name">Google User</string>
+
+    <!-- Home screen -->
+    <string name="greeting_hello">Hello, %1$s</string>
+    <string name="home_subtitle">Select a crop to begin diagnosis</string>
+    <string name="weekly_activity_title">This Week\'s Activity</string>
+    <string name="weekly_activity_empty">No scans yet this week</string>
+    <string name="stat_diseases_found">Diseases Found</string>
+    <string name="stat_healthy_scans">Healthy Scans</string>
+    <string name="stat_awaiting_review">Awaiting Review</string>
+    <string name="stat_most_common">Most Common</string>
+    <string name="ready_to_scan">Ready to scan a crop?</string>
+    <string name="action_start_new_scan">Start New Scan</string>
+    <string name="recent_scans_title">Recent Scans</string>
+    <string name="action_view_all">View All</string>
+    <string name="select_crop_type">Select Crop Type</string>
+    <string name="status_disease_detected">%1$s - Disease Detected</string>
+    <string name="status_healthy_crop">Healthy %1$s</string>
+
+    <!-- Camera screen -->
+    <string name="camera_frame_hint">Place diseased leaf within frame</string>
+    <string name="camera_analysing">Analysing leaf…</string>
+    <string name="camera_analysing_short">Analysing…</string>
+    <string name="escalated_title">Sent for Expert Review</string>
+    <string name="escalated_message">We couldn\'t classify this leaf with confidence. A botanist will review your photo and respond soon.</string>
+    <string name="low_confidence_warning">Low confidence result. For a more accurate diagnosis, please retake with better lighting and focus.</string>
+    <string name="action_view_results">View Results</string>
+    <string name="permission_required_title">Camera permission is required</string>
+    <string name="permission_required_body">to scan crop leaves for disease detection</string>
+    <string name="action_grant_permission">Grant Permission</string>
+
+    <!-- Results screen -->
+    <string name="error_invalid_scan">Invalid scan reference</string>
+    <string name="title_diagnosis_result">Diagnosis Result</string>
+    <string name="botanist_assessment_label">Botanist\'s Assessment:</string>
+    <string name="rated_consultation">You rated this consultation</string>
+    <string name="awaiting_expert_review_body">This scan has been sent to a botanist for expert diagnosis. Check back here once a response is received.</string>
+    <string name="sync_status_synced">Synced to cloud</string>
+    <string name="about_disease_title">About This Disease</string>
+    <string name="symptoms_label">Symptoms:</string>
+    <string name="healthy_crop_title">%1$s Appears Healthy</string>
+    <string name="healthy_crop_body">No disease detected in this scan.</string>
+    <string name="how_was_consultation">How was your consultation?</string>
+    <string name="comment_hint_optional">Add a comment (optional)</string>
+    <string name="action_submit_rating">Submit Rating</string>
+    <string name="info_products">Products</string>
+    <string name="info_method">Method</string>
+    <string name="info_dosage">Dosage</string>
+    <string name="info_est_cost">Est. Cost</string>
+
+    <!-- History screen -->
+    <string name="title_scan_history">Scan History</string>
+    <string name="filter_all">All</string>
+    <string name="filter_pending_sync">Pending Sync</string>
+    <string name="empty_scans_all">No scans yet.\nTap a crop on the home screen to begin your first diagnosis.</string>
+    <string name="empty_scans_pending">No pending scans.\nAll scans have been synced to the cloud.</string>
+    <string name="empty_scans_filtered">No %1$s scans found.\nTry selecting a different filter.</string>
+    <string name="sync_status_synchronized">Synchronized</string>
+
+    <!-- Profile screen -->
+    <string name="title_profile">Profile</string>
+    <string name="profile_language_label">Language</string>
+    <string name="language_english">English</string>
+    <string name="language_swahili">Swahili</string>
+
+    <!-- Notifications screen -->
+    <string name="title_notifications">Notifications</string>
+    <string name="action_mark_all_read">Mark all read</string>
+    <string name="empty_notifications">No notifications yet</string>
 </resources>

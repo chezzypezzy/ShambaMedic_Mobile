@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -28,8 +29,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.shambamedic.BuildConfig
+import com.example.shambamedic.R
 import com.example.shambamedic.domain.model.Disease
 import com.example.shambamedic.domain.model.Treatment
+import com.example.shambamedic.presentation.common.cropDisplayName
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,8 +57,7 @@ fun ResultsScreen(
                     tint = Color.Gray
                 )
                 Text(
-                    // TODO: Add Swahili
-                    "Invalid scan reference",
+                    stringResource(R.string.error_invalid_scan),
                     color = Color.Gray,
                     fontSize = 16.sp
                 )
@@ -67,8 +69,7 @@ fun ResultsScreen(
                         containerColor = Color(0xFF2E7D32)
                     )
                 ) {
-                    // TODO: Add Swahili
-                    Text("Go Back")
+                    Text(stringResource(R.string.action_go_back))
                 }
             }
         }
@@ -87,10 +88,10 @@ fun ResultsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Diagnosis Result", fontWeight = FontWeight.Bold, color = Color.White) }, // TODO: Add Swahili
+                title = { Text(stringResource(R.string.title_diagnosis_result), fontWeight = FontWeight.Bold, color = Color.White) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.content_desc_back), tint = Color.White)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = primaryGreen)
@@ -116,7 +117,7 @@ fun ResultsScreen(
                         onClick = { navController.popBackStack() },
                         colors = ButtonDefaults.buttonColors(containerColor = primaryGreen)
                     ) {
-                        Text("Go Back") // TODO: Add Swahili
+                        Text(stringResource(R.string.action_go_back))
                     }
                 }
             }
@@ -150,14 +151,14 @@ fun ResultsScreen(
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(
-                                        text = "Expert Diagnosis Received", // TODO: Add Swahili
+                                        text = stringResource(R.string.status_expert_diagnosis_received),
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.Bold
                                     )
                                 }
                                 HorizontalDivider(color = Color.LightGray.copy(alpha = 0.5f))
                                 Text(
-                                    text = "Botanist's Assessment:", // TODO: Add Swahili
+                                    text = stringResource(R.string.botanist_assessment_label),
                                     fontSize = 13.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.Gray
@@ -186,9 +187,10 @@ fun ResultsScreen(
                                     )
                                 }
                                 Text(
-                                    text = "  You rated this consultation", // TODO: Add Swahili
+                                    text = stringResource(R.string.rated_consultation),
                                     fontSize = 13.sp,
-                                    color = Color.Gray
+                                    color = Color.Gray,
+                                    modifier = Modifier.padding(start = 4.dp)
                                 )
                             }
                         }
@@ -212,14 +214,13 @@ fun ResultsScreen(
                                     tint = Color(0xFFF57F17)
                                 )
                                 Text(
-                                    text = "Awaiting Expert Review", // TODO: Add Swahili
+                                    text = stringResource(R.string.status_awaiting_expert_review),
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.DarkGray
                                 )
                                 Text(
-                                    text = "This scan has been sent to a botanist for expert diagnosis. " +
-                                        "Check back here once a response is received.", // TODO: Add Swahili
+                                    text = stringResource(R.string.awaiting_expert_review_body),
                                     fontSize = 14.sp,
                                     color = Color.Gray,
                                     textAlign = TextAlign.Center
@@ -291,7 +292,7 @@ fun ResultsScreen(
                     Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                                val healthyCropName = "Healthy ${scan.cropType.replaceFirstChar { it.uppercase() }}"
+                                val healthyCropName = stringResource(R.string.status_healthy_crop, cropDisplayName(scan.cropType))
                                 Text(
                                     text = uiState.disease?.diseaseName ?: healthyCropName,
                                     fontSize = 22.sp,
@@ -329,7 +330,7 @@ fun ResultsScreen(
                         HorizontalDivider(color = Color.LightGray.copy(alpha = 0.5f))
 
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                            Text("Confidence Score", fontSize = 13.sp, color = Color.Gray) // TODO: Add Swahili
+                            Text(stringResource(R.string.confidence_score_label), fontSize = 13.sp, color = Color.Gray)
                             Text("${(scan.confidenceScore * 100).toInt()}%", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = primaryGreen)
                         }
 
@@ -352,7 +353,7 @@ fun ResultsScreen(
                                 tint = if (isSynced) primaryGreen else Color.Gray
                             )
                             Text(
-                                text = if (isSynced) "Synced to cloud" else "Pending sync", // TODO: Add Swahili
+                                text = if (isSynced) stringResource(R.string.sync_status_synced) else stringResource(R.string.sync_status_pending),
                                 fontSize = 12.sp,
                                 color = Color.Gray
                             )
@@ -370,12 +371,12 @@ fun ResultsScreen(
                         colors = CardDefaults.cardColors(containerColor = Color.White)
                     ) {
                         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Text("About This Disease", fontSize = 16.sp, fontWeight = FontWeight.SemiBold) // TODO: Add Swahili
+                            Text(stringResource(R.string.about_disease_title), fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
                             HorizontalDivider(color = Color.LightGray.copy(alpha = 0.5f))
-                            Text("Symptoms:", fontSize = 13.sp, fontWeight = FontWeight.Bold) // TODO: Add Swahili
+                            Text(stringResource(R.string.symptoms_label), fontSize = 13.sp, fontWeight = FontWeight.Bold)
                             Text(text = disease.symptomDescription, fontSize = 13.sp, color = Color.Gray)
                             Spacer(modifier = Modifier.height(4.dp))
-                            Text("Severity Impact:", fontSize = 13.sp, fontWeight = FontWeight.Bold) // TODO: Add Swahili
+                            Text(stringResource(R.string.severity_impact_label), fontSize = 13.sp, fontWeight = FontWeight.Bold)
                             Text(text = disease.severityScale, fontSize = 13.sp, color = Color.Gray)
                         }
                     }
@@ -383,7 +384,7 @@ fun ResultsScreen(
 
                 // TREATMENTS SECTION
                 if (uiState.treatments.isNotEmpty()) {
-                    Text("Recommended Treatments", fontSize = 18.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 8.dp)) // TODO: Add Swahili
+                    Text(stringResource(R.string.recommended_treatments_title), fontSize = 18.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 8.dp))
                     uiState.treatments.forEach { treatment ->
                         TreatmentCard(treatment)
                     }
@@ -401,9 +402,9 @@ fun ResultsScreen(
                             Icon(Icons.Default.CheckCircle, contentDescription = null, modifier = Modifier.size(40.dp), tint = primaryGreen)
                             Spacer(modifier = Modifier.width(12.dp))
                             Column {
-                                val cropName = scan.cropType.replaceFirstChar { it.uppercase() }
-                                Text("$cropName Appears Healthy", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = primaryGreen) // TODO: Add Swahili
-                                Text("No disease detected in this scan.", fontSize = 13.sp, color = Color.Gray) // TODO: Add Swahili
+                                val cropName = cropDisplayName(scan.cropType)
+                                Text(stringResource(R.string.healthy_crop_title, cropName), fontSize = 16.sp, fontWeight = FontWeight.Bold, color = primaryGreen)
+                                Text(stringResource(R.string.healthy_crop_body), fontSize = 13.sp, color = Color.Gray)
                             }
                         }
                     }
@@ -419,7 +420,7 @@ fun ResultsScreen(
                 ) {
                     Icon(Icons.Default.CameraAlt, contentDescription = null, modifier = Modifier.size(20.dp), tint = Color.White)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Scan Another Leaf", color = Color.White) // TODO: Add Swahili
+                    Text(stringResource(R.string.action_scan_another_leaf), color = Color.White)
                 }
             }
         }
@@ -446,10 +447,10 @@ private fun TreatmentCard(treatment: Treatment) {
                 Text(text = treatment.interventionType, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
             }
             HorizontalDivider(color = Color.LightGray.copy(alpha = 0.5f))
-            InfoRow("Products", treatment.productNames)
-            InfoRow("Method", treatment.applicationMethod)
-            InfoRow("Dosage", treatment.dosage)
-            InfoRow("Est. Cost", treatment.costRangeKes)
+            InfoRow(stringResource(R.string.info_products), treatment.productNames)
+            InfoRow(stringResource(R.string.info_method), treatment.applicationMethod)
+            InfoRow(stringResource(R.string.info_dosage), treatment.dosage)
+            InfoRow(stringResource(R.string.info_est_cost), treatment.costRangeKes)
         }
     }
 }
@@ -471,7 +472,7 @@ private fun RatingCard(onSubmit: (Int, String?) -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "How was your consultation?", // TODO: Add Swahili
+                text = stringResource(R.string.how_was_consultation),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
@@ -493,7 +494,7 @@ private fun RatingCard(onSubmit: (Int, String?) -> Unit) {
             OutlinedTextField(
                 value = commentText,
                 onValueChange = { commentText = it },
-                label = { Text("Add a comment (optional)") }, // TODO: Add Swahili
+                label = { Text(stringResource(R.string.comment_hint_optional)) },
                 minLines = 2,
                 maxLines = 4,
                 modifier = Modifier.fillMaxWidth()
@@ -506,7 +507,7 @@ private fun RatingCard(onSubmit: (Int, String?) -> Unit) {
                 shape = RoundedCornerShape(24.dp),
                 enabled = selectedStars > 0
             ) {
-                Text("Submit Rating", color = Color.White) // TODO: Add Swahili
+                Text(stringResource(R.string.action_submit_rating), color = Color.White)
             }
         }
     }

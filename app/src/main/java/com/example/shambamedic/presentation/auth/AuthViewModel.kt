@@ -1,10 +1,15 @@
 package com.example.shambamedic.presentation.auth
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.content.Context
+import com.example.shambamedic.R
 import com.example.shambamedic.data.repository.UserRepository
 import com.example.shambamedic.domain.usecase.AuthenticateUserUseCase
+import com.example.shambamedic.presentation.common.getAppLocale
+import com.example.shambamedic.presentation.common.setAppLocale
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,7 +37,8 @@ data class AuthUiState(
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val authenticateUserUseCase: AuthenticateUserUseCase,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AuthUiState())
@@ -40,6 +46,11 @@ class AuthViewModel @Inject constructor(
 
     init {
         checkSession()
+        // Sync the toggle's highlighted state to the actual persisted locale - otherwise a
+        // restart after choosing Swahili would show "EN" highlighted while the app displays sw.
+        if (getAppLocale(context) == "sw") {
+            _uiState.update { it.copy(selectedLanguage = "sw") }
+        }
     }
 
     private fun checkSession() {
@@ -92,6 +103,7 @@ class AuthViewModel @Inject constructor(
 
     fun onLanguageChange(language: String) {
         _uiState.update { it.copy(selectedLanguage = language) }
+        setAppLocale(context, language)
     }
 
     private fun validateInputs(): Boolean {
@@ -99,22 +111,22 @@ class AuthViewModel @Inject constructor(
         val state = _uiState.value
 
         if (state.phoneNumber.isBlank()) {
-            _uiState.update { it.copy(phoneError = "Phone number required") }
+            _uiState.update { it.copy(phoneError = context.getString(R.string.error_phone_required)) }
             isValid = false
         }
 
         if (state.pin.length != 4) {
-            _uiState.update { it.copy(pinError = "4-digit PIN required") }
+            _uiState.update { it.copy(pinError = context.getString(R.string.error_pin_required)) }
             isValid = false
         }
 
         if (!state.isLoginMode) {
             if (state.name.isBlank()) {
-                _uiState.update { it.copy(nameError = "Full name required") }
+                _uiState.update { it.copy(nameError = context.getString(R.string.error_name_required)) }
                 isValid = false
             }
             if (state.confirmPin != state.pin) {
-                _uiState.update { it.copy(confirmPinError = "PINs do not match") }
+                _uiState.update { it.copy(confirmPinError = context.getString(R.string.error_pin_mismatch)) }
                 isValid = false
             }
         }
@@ -159,7 +171,7 @@ class AuthViewModel @Inject constructor(
             } else {
                 _uiState.update {
                     it.copy(
-                        generalError = "Google sign-in failed. Please try again.",
+                        generalError = context.getString(R.string.error_google_signin_failed),
                         isGoogleSignInLoading = false
                     )
                 }

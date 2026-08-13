@@ -1,13 +1,17 @@
 package com.example.shambamedic.presentation.history
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.shambamedic.R
 import com.example.shambamedic.data.local.dao.DiseaseDao
 import com.example.shambamedic.data.local.dao.EscalationDao
 import com.example.shambamedic.data.repository.ScanRepository
 import com.example.shambamedic.data.repository.UserRepository
 import com.example.shambamedic.domain.model.Scan
+import com.example.shambamedic.presentation.common.cropDisplayName
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -35,7 +39,8 @@ class HistoryViewModel @Inject constructor(
     private val scanRepository: ScanRepository,
     private val userRepository: UserRepository,
     private val diseaseDao: DiseaseDao,
-    private val escalationDao: EscalationDao
+    private val escalationDao: EscalationDao,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HistoryUiState())
@@ -58,11 +63,11 @@ class HistoryViewModel @Inject constructor(
             val scansWithNames = list.map { scan ->
                 val escalationStatus = escalationDao.getEscalationByScanId(scan.scanId)?.status
                 val diseaseName = when (escalationStatus) {
-                    "pending" -> "Awaiting Expert Review" // TODO: Add Swahili
-                    "resolved" -> "Expert Diagnosis Received" // TODO: Add Swahili
+                    "pending" -> context.getString(R.string.status_awaiting_expert_review)
+                    "resolved" -> context.getString(R.string.status_expert_diagnosis_received)
                     else -> scan.diseaseId?.let { diseaseId ->
                         diseaseDao.getDiseaseById(diseaseId)?.diseaseName
-                    } ?: "Healthy ${scan.cropType.replaceFirstChar { it.uppercase() }}"
+                    } ?: context.getString(R.string.status_healthy_crop, cropDisplayName(context, scan.cropType))
                 }
                 ScanWithDiseaseName(scan = scan, diseaseName = diseaseName, escalationStatus = escalationStatus)
             }

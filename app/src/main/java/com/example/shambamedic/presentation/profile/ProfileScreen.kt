@@ -13,11 +13,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.shambamedic.R
+import com.example.shambamedic.presentation.common.getAppLocale
 import com.example.shambamedic.presentation.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,10 +46,10 @@ fun ProfileScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Profile", fontWeight = FontWeight.Bold, color = Color.White) },
+                title = { Text(stringResource(R.string.title_profile), fontWeight = FontWeight.Bold, color = Color.White) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.content_desc_back), tint = Color.White)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = primaryGreen)
@@ -102,9 +106,15 @@ fun ProfileScreen(
 
                 HorizontalDivider(color = Color.LightGray.copy(alpha = 0.5f))
 
+                // Reflects the actual live app locale (set via the toggle on the auth
+                // screen), not uiState.languagePreference - that DB field is currently
+                // always "en" at account creation and is never updated by the toggle, so
+                // it would show stale/wrong data here.
+                val context = LocalContext.current
+                val isSwahili = getAppLocale(context) == "sw"
                 ProfileInfoRow(
-                    label = "Language",
-                    value = if (uiState.languagePreference == "sw") "Swahili" else "English"
+                    label = stringResource(R.string.profile_language_label),
+                    value = if (isSwahili) stringResource(R.string.language_swahili) else stringResource(R.string.language_english)
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
@@ -114,7 +124,7 @@ fun ProfileScreen(
                     modifier = Modifier.fillMaxWidth().height(52.dp),
                     colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFFB71C1C))
                 ) {
-                    Text("Logout")
+                    Text(stringResource(R.string.action_logout))
                 }
             }
         }

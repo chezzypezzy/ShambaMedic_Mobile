@@ -57,6 +57,9 @@ fun AuthScreen(
     val credentialManager = remember { CredentialManager.create(context) }
     val coroutineScope = rememberCoroutineScope()
     val googleWebClientId = stringResource(R.string.google_web_client_id)
+    val errorUnexpectedCredential = stringResource(R.string.error_unexpected_credential)
+    val errorGoogleSignInCancelledTemplate = stringResource(R.string.error_google_signin_cancelled)
+    val fallbackGoogleUserName = stringResource(R.string.fallback_google_user_name)
 
     fun triggerGoogleSignIn() {
         coroutineScope.launch {
@@ -84,14 +87,14 @@ fun AuthScreen(
                         googleId = googleIdTokenCredential.id,
                         email = googleIdTokenCredential.id,
                         displayName = googleIdTokenCredential.displayName
-                            ?: "Google User"
+                            ?: fallbackGoogleUserName
                     )
                 } else {
-                    viewModel.onGoogleSignInError("Unexpected credential type")
+                    viewModel.onGoogleSignInError(errorUnexpectedCredential)
                 }
             } catch (e: GetCredentialException) {
                 viewModel.onGoogleSignInError(
-                    "Google sign-in was cancelled or failed: ${e.message}"
+                    errorGoogleSignInCancelledTemplate.format(e.message)
                 )
             }
         }
@@ -134,13 +137,13 @@ fun AuthScreen(
                     modifier = Modifier.size(72.dp)
                 )
                 Text(
-                    text = "ShambaMedic", // TODO: Add Swahili strings
+                    text = stringResource(R.string.app_name),
                     color = Color.White,
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = "Crop Health in Your Hands", // TODO: Add Swahili strings
+                    text = stringResource(R.string.app_tagline),
                     color = Color.White.copy(alpha = 0.8f),
                     fontSize = 14.sp
                 )
@@ -183,12 +186,12 @@ fun AuthScreen(
             Tab(
                 selected = uiState.isLoginMode,
                 onClick = { if (!uiState.isLoginMode) viewModel.toggleMode() },
-                text = { Text("Login") } // TODO: Add Swahili strings
+                text = { Text(stringResource(R.string.tab_login)) }
             )
             Tab(
                 selected = !uiState.isLoginMode,
                 onClick = { if (uiState.isLoginMode) viewModel.toggleMode() },
-                text = { Text("Register") } // TODO: Add Swahili strings
+                text = { Text(stringResource(R.string.tab_register)) }
             )
         }
 
@@ -218,7 +221,7 @@ fun AuthScreen(
                     OutlinedTextField(
                         value = uiState.name,
                         onValueChange = viewModel::onNameChange,
-                        label = { Text("Full Name") }, // TODO: Add Swahili strings
+                        label = { Text(stringResource(R.string.label_full_name)) },
                         leadingIcon = { Icon(Icons.Default.Person, contentDescription = null) },
                         modifier = Modifier.fillMaxWidth(),
                         isError = uiState.nameError != null,
@@ -231,7 +234,7 @@ fun AuthScreen(
                 OutlinedTextField(
                     value = uiState.phoneNumber,
                     onValueChange = viewModel::onPhoneChange,
-                    label = { Text("Phone Number") }, // TODO: Add Swahili strings
+                    label = { Text(stringResource(R.string.label_phone_number)) },
                     leadingIcon = { Icon(Icons.Default.Phone, contentDescription = null) },
                     prefix = { Text("+254 ") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -245,7 +248,7 @@ fun AuthScreen(
                 OutlinedTextField(
                     value = uiState.pin,
                     onValueChange = viewModel::onPinChange,
-                    label = { Text("4-Digit PIN") }, // TODO: Add Swahili strings
+                    label = { Text(stringResource(R.string.label_pin)) },
                     leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
                     visualTransformation = if (pinVisible)
                         VisualTransformation.None
@@ -275,7 +278,7 @@ fun AuthScreen(
                     OutlinedTextField(
                         value = uiState.confirmPin,
                         onValueChange = viewModel::onConfirmPinChange,
-                        label = { Text("Confirm PIN") }, // TODO: Add Swahili strings
+                        label = { Text(stringResource(R.string.label_confirm_pin)) },
                         leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
                         visualTransformation = if (confirmPinVisible)
                             VisualTransformation.None
@@ -330,7 +333,7 @@ fun AuthScreen(
                         )
                     } else {
                         Text(
-                            text = if (uiState.isLoginMode) "Login" else "Create Account", // TODO: Add Swahili strings
+                            text = if (uiState.isLoginMode) stringResource(R.string.tab_login) else stringResource(R.string.action_create_account),
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -344,13 +347,13 @@ fun AuthScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = if (uiState.isLoginMode) "Don't have an account?" else "Already have an account?", // TODO: Add Swahili strings
+                        text = if (uiState.isLoginMode) stringResource(R.string.prompt_no_account) else stringResource(R.string.prompt_has_account),
                         color = Color.Gray,
                         style = MaterialTheme.typography.bodySmall
                     )
                     TextButton(onClick = viewModel::toggleMode) {
                         Text(
-                            text = if (uiState.isLoginMode) "Register" else "Login", // TODO: Add Swahili strings
+                            text = if (uiState.isLoginMode) stringResource(R.string.tab_register) else stringResource(R.string.tab_login),
                             color = primaryGreen,
                             fontWeight = FontWeight.Bold
                         )
@@ -365,9 +368,10 @@ fun AuthScreen(
                 ) {
                     HorizontalDivider(modifier = Modifier.weight(1f))
                     Text(
-                        text = "  OR  ", // TODO: Add Swahili strings
+                        text = stringResource(R.string.divider_or),
                         fontSize = 12.sp,
-                        color = Color.Gray
+                        color = Color.Gray,
+                        modifier = Modifier.padding(horizontal = 8.dp)
                     )
                     HorizontalDivider(modifier = Modifier.weight(1f))
                 }
@@ -397,7 +401,7 @@ fun AuthScreen(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "Continue with Google", // TODO: Add Swahili strings
+                            text = stringResource(R.string.action_continue_google),
                             fontSize = 15.sp,
                             color = Color.DarkGray
                         )
