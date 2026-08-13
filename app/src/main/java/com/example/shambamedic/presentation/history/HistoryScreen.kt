@@ -75,7 +75,8 @@ fun HistoryScreen(
             "maize" to stringResource(R.string.crop_maize),
             "potato" to stringResource(R.string.crop_potato),
             "tomato" to stringResource(R.string.crop_tomato),
-            "pending" to stringResource(R.string.filter_pending_sync)
+            "pending" to stringResource(R.string.filter_pending_sync),
+            "awaiting_review" to stringResource(R.string.status_awaiting_expert_review)
         )
 
         Column(modifier = Modifier.padding(paddingValues).fillMaxSize()) {
@@ -109,6 +110,7 @@ fun HistoryScreen(
                 val emptyMessage = when (uiState.selectedFilter) {
                     "all" -> stringResource(R.string.empty_scans_all)
                     "pending" -> stringResource(R.string.empty_scans_pending)
+                    "awaiting_review" -> stringResource(R.string.empty_scans_awaiting_review)
                     else -> stringResource(R.string.empty_scans_filtered, cropDisplayName(uiState.selectedFilter))
                 }
                 Box(modifier = Modifier.fillMaxSize().padding(16.dp), contentAlignment = Alignment.Center) {

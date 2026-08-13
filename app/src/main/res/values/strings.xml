@@ -100,6 +100,7 @@
     <string name="filter_pending_sync">Pending Sync</string>
     <string name="empty_scans_all">No scans yet.\nTap a crop on the home screen to begin your first diagnosis.</string>
     <string name="empty_scans_pending">No pending scans.\nAll scans have been synced to the cloud.</string>
+    <string name="empty_scans_awaiting_review">No scans awaiting review.\nAll your scans have been diagnosed.</string>
     <string name="empty_scans_filtered">No %1$s scans found.\nTry selecting a different filter.</string>
     <string name="sync_status_synchronized">Synchronized</string>
 

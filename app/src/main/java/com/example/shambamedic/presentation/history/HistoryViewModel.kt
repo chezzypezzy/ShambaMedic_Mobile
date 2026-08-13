@@ -91,6 +91,9 @@ class HistoryViewModel @Inject constructor(
             "pending" -> current.scans.filter {
                 it.scan.syncStatus == "pending"
             }
+            "awaiting_review" -> current.scans.filter {
+                it.escalationStatus == "pending"
+            }
             else -> current.scans
         }
         _uiState.update { it.copy(filteredScans = filtered) }
