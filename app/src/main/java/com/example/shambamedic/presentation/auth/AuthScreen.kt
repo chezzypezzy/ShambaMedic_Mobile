@@ -116,6 +116,7 @@ fun AuthScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(backgroundGrey)
+            .imePadding()
             .verticalScroll(rememberScrollState())
     ) {
         // TOP SECTION
