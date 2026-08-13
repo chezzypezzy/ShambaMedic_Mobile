@@ -27,8 +27,8 @@ class InferenceEngine @Inject constructor(
     private var interpreter: Interpreter? = null
     private val modelFileName = "shambamedic_model.tflite"
     
-    private val inputImageWidth = 200
-    private val inputImageHeight = 200
+    private val inputImageWidth = 224
+    private val inputImageHeight = 224
     private val inputChannels = 3
     private val modelInputSize = inputImageWidth * inputImageHeight * inputChannels * 4
 
@@ -55,7 +55,10 @@ class InferenceEngine @Inject constructor(
             interpreter = Interpreter(model, options)
             Log.d("InferenceEngine", "TFLite interpreter initialized successfully on CPU")
         } catch (e: Throwable) {
-            Log.e("InferenceEngine", "Failed to initialize TFLite interpreter: ${e.message}")
+            // Full type + stack trace, not just e.message: interpreter construction can
+            // fail for several very different reasons (op/version mismatch, corrupt
+            // model, shape assertion) that a bare message alone doesn't always distinguish.
+            Log.e("InferenceEngine", "Failed to initialize TFLite interpreter: ${e.javaClass.name}: ${e.message}", e)
             interpreter = null
         }
     }
@@ -82,16 +85,20 @@ class InferenceEngine @Inject constructor(
 
                 val scores = outputArray[0]
 
-                // Get the indices that are valid for the selected cropType
+                // Restrict the argmax to the labels belonging to the selected crop, so a
+                // Potato scan can't resolve to a Corn/Tomato class. Every one of this
+                // model's 17 classes belongs to Corn/Potato/Tomato (no "background" or
+                // other-crop classes to exclude), so this is purely a selected-crop
+                // restriction now, not a filter separating relevant from irrelevant classes.
                 val validIndices = if (cropType == "all") {
                     ModelLabels.LABELS.indices.toList()
                 } else {
                     ModelLabels.LABELS.indices.filter { idx ->
                         val label = ModelLabels.LABELS[idx]
                         when (cropType) {
-                            "maize" -> label.startsWith("corn")
-                            "potato" -> label.startsWith("potato")
-                            "tomato" -> label.startsWith("tomato")
+                            "maize" -> label.startsWith("Corn___")
+                            "potato" -> label.startsWith("Potato___")
+                            "tomato" -> label.startsWith("Tomato___")
                             else -> true
                         }
                     }
@@ -103,11 +110,6 @@ class InferenceEngine @Inject constructor(
 
                 val confidence = scores[maxIndex]
                 val label = ModelLabels.LABELS[maxIndex]
-
-                if (label == "background" || (cropType != "all" && !ModelLabels.LABELS[maxIndex].startsWith(if (cropType == "maize") "corn" else cropType))) {
-                    // This second check is redundant due to validIndices but kept for safety
-                    return@withLock Result.failure(Exception("No plant disease detected. Please capture a clear image of a diseased crop leaf."))
-                }
 
                 // A genuine tie among the crop-filtered candidates (all within tieEpsilon of
                 // the top score) means maxIndex was picked by array order, not by a real

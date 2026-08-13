@@ -2,104 +2,81 @@ package com.example.shambamedic.ml
 
 object ModelLabels {
 
+    // Exact order of the crop-specific 17-class model's output layer (labels.txt).
     val LABELS = listOf(
-        "apple apple scab",
-        "apple black rot",
-        "apple cedar apple rust",
-        "apple healthy",
-        "blueberry healthy",
-        "cherry including sour powdery mildew",
-        "cherry including sour healthy",
-        "corn maize cercospora leaf spot gray leaf spot",
-        "corn maize common rust",
-        "corn maize northern leaf blight",
-        "corn maize healthy",
-        "grape black rot",
-        "grape esca black measles",
-        "grape leaf blight isariopsis leaf spot",
-        "grape healthy",
-        "orange haunglongbing citrus greening",
-        "peach bacterial spot",
-        "peach healthy",
-        "pepper bell bacterial spot",
-        "pepper bell healthy",
-        "potato early blight",
-        "potato late blight",
-        "potato healthy",
-        "raspberry healthy",
-        "soybean healthy",
-        "squash powdery mildew",
-        "strawberry leaf scorch",
-        "strawberry healthy",
-        "tomato bacterial spot",
-        "tomato early blight",
-        "tomato late blight",
-        "tomato leaf mold",
-        "tomato septoria leaf spot",
-        "tomato spider mites two spotted spider mite",
-        "tomato target spot",
-        "tomato tomato yellow leaf curl virus",
-        "tomato tomato mosaic virus",
-        "tomato healthy",
-        "background"
+        "Corn___Cercospora_leaf_spot Gray_leaf_spot",
+        "Corn___Common_rust",
+        "Corn___Northern_Leaf_Blight",
+        "Corn___healthy",
+        "Potato___Early_blight",
+        "Potato___Late_blight",
+        "Potato___healthy",
+        "Tomato___Bacterial_spot",
+        "Tomato___Early_blight",
+        "Tomato___Late_blight",
+        "Tomato___Leaf_Mold",
+        "Tomato___Septoria_leaf_spot",
+        "Tomato___Spider_mites Two-spotted_spider_mite",
+        "Tomato___Target_Spot",
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+        "Tomato___Tomato_mosaic_virus",
+        "Tomato___healthy"
     )
 
     val LABEL_TO_DISEASE_ID = mapOf(
-        "corn maize cercospora leaf spot gray leaf spot" to "disease_maize_002",
-        "corn maize common rust" to "disease_maize_003",
-        "corn maize northern leaf blight" to null,
-        "corn maize healthy" to null,
-        "potato early blight" to "disease_potato_002",
-        "potato late blight" to "disease_potato_001",
-        "potato healthy" to null,
-        "tomato bacterial spot" to null,
-        "tomato early blight" to "disease_tomato_002",
-        "tomato late blight" to "disease_tomato_004",
-        "tomato leaf mold" to "disease_tomato_003",
-        "tomato septoria leaf spot" to null,
-        "tomato spider mites two spotted spider mite" to null,
-        "tomato target spot" to null,
-        "tomato tomato yellow leaf curl virus" to null,
-        "tomato tomato mosaic virus" to null,
-        "tomato healthy" to null,
-        "background" to null
+        "Corn___Cercospora_leaf_spot Gray_leaf_spot" to "disease_maize_002",
+        "Corn___Common_rust" to "disease_maize_003",
+        "Corn___Northern_Leaf_Blight" to null,
+        "Corn___healthy" to null,
+        "Potato___Early_blight" to "disease_potato_002",
+        "Potato___Late_blight" to "disease_potato_001",
+        "Potato___healthy" to null,
+        "Tomato___Bacterial_spot" to null,
+        "Tomato___Early_blight" to "disease_tomato_002",
+        "Tomato___Late_blight" to "disease_tomato_004",
+        "Tomato___Leaf_Mold" to "disease_tomato_003",
+        "Tomato___Septoria_leaf_spot" to null,
+        "Tomato___Spider_mites Two-spotted_spider_mite" to null,
+        "Tomato___Target_Spot" to null,
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus" to null,
+        "Tomato___Tomato_mosaic_virus" to null,
+        "Tomato___healthy" to null
     )
 
     val HEALTHY_LABELS = setOf(
-        "corn maize healthy",
-        "potato healthy",
-        "tomato healthy"
+        "Corn___healthy",
+        "Potato___healthy",
+        "Tomato___healthy"
     )
 
     fun getCropTypeFromLabel(label: String): String {
         return when {
-            label.startsWith("corn") -> "maize"
-            label.startsWith("potato") -> "potato"
-            label.startsWith("tomato") -> "tomato"
+            label.startsWith("Corn___") -> "maize"
+            label.startsWith("Potato___") -> "potato"
+            label.startsWith("Tomato___") -> "tomato"
             else -> "unknown"
         }
     }
 
     fun getDisplayName(label: String): String {
         return when (label) {
-            "corn maize cercospora leaf spot gray leaf spot" -> "Gray Leaf Spot (Maize)"
-            "corn maize common rust" -> "Common Rust (Maize)"
-            "corn maize northern leaf blight" -> "Northern Leaf Blight (Maize)"
-            "corn maize healthy" -> "Healthy Maize Plant"
-            "potato early blight" -> "Early Blight (Potato)"
-            "potato late blight" -> "Late Blight (Potato)"
-            "potato healthy" -> "Healthy Potato Plant"
-            "tomato bacterial spot" -> "Bacterial Spot (Tomato)"
-            "tomato early blight" -> "Early Blight (Tomato)"
-            "tomato late blight" -> "Late Blight (Tomato)"
-            "tomato leaf mold" -> "Leaf Mold (Tomato)"
-            "tomato septoria leaf spot" -> "Septoria Leaf Spot (Tomato)"
-            "tomato spider mites two spotted spider mite" -> "Spider Mites (Tomato)"
-            "tomato target spot" -> "Target Spot (Tomato)"
-            "tomato tomato yellow leaf curl virus" -> "Yellow Leaf Curl Virus (Tomato)"
-            "tomato tomato mosaic virus" -> "Mosaic Virus (Tomato)"
-            "tomato healthy" -> "Healthy Tomato Plant"
-            "background" -> "No Plant Detected"
+            "Corn___Cercospora_leaf_spot Gray_leaf_spot" -> "Gray Leaf Spot (Maize)"
+            "Corn___Common_rust" -> "Common Rust (Maize)"
+            "Corn___Northern_Leaf_Blight" -> "Northern Leaf Blight (Maize)"
+            "Corn___healthy" -> "Healthy Maize Plant"
+            "Potato___Early_blight" -> "Early Blight (Potato)"
+            "Potato___Late_blight" -> "Late Blight (Potato)"
+            "Potato___healthy" -> "Healthy Potato Plant"
+            "Tomato___Bacterial_spot" -> "Bacterial Spot (Tomato)"
+            "Tomato___Early_blight" -> "Early Blight (Tomato)"
+            "Tomato___Late_blight" -> "Late Blight (Tomato)"
+            "Tomato___Leaf_Mold" -> "Leaf Mold (Tomato)"
+            "Tomato___Septoria_leaf_spot" -> "Septoria Leaf Spot (Tomato)"
+            "Tomato___Spider_mites Two-spotted_spider_mite" -> "Spider Mites (Tomato)"
+            "Tomato___Target_Spot" -> "Target Spot (Tomato)"
+            "Tomato___Tomato_Yellow_Leaf_Curl_Virus" -> "Yellow Leaf Curl Virus (Tomato)"
+            "Tomato___Tomato_mosaic_virus" -> "Mosaic Virus (Tomato)"
+            "Tomato___healthy" -> "Healthy Tomato Plant"
             else -> label
         }
     }
