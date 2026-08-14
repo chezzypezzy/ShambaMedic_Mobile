@@ -72,7 +72,8 @@
       "Bash(\"C:/Users/Peter/AppData/Local/Android/Sdk/platform-tools/adb.exe\" devices *)",
       "Bash(C:/Users/Peter/AppData/Local/Android/Sdk/platform-tools/adb.exe logcat *)",
       "Bash(C:/Users/Peter/AppData/Local/Android/Sdk/platform-tools/adb.exe shell *)",
-      "Bash(C:/Users/Peter/AppData/Local/Android/Sdk/platform-tools/adb.exe exec-out *)"
+      "Bash(C:/Users/Peter/AppData/Local/Android/Sdk/platform-tools/adb.exe exec-out *)",
+      "Bash(adb shell *)"
     ]
   }
 }
