@@ -87,9 +87,12 @@ class SyncRepository(
                     scanDao.updateSyncStatus(scan.scanId, "synchronized")
                     count++
                 } catch (e: HttpException) {
-                    // 4xx (e.g. 422 validation) won't succeed on retry without a code fix;
-                    // 5xx is a server-side/transient issue, leave pending for retry.
-                    if (e.code() in 400..499) {
+                    // Genuine validation/auth errors won't succeed on retry without a code
+                    // fix. 404/408/429 and other 5xx can indicate misconfiguration or a
+                    // transient backend issue (e.g. a wrong base URL) rather than bad data,
+                    // so leave those pending for retry - matches pushPendingEscalations()/
+                    // pushPendingRatings() below.
+                    if (e.code() in setOf(400, 401, 403, 422)) {
                         scanDao.updateSyncStatus(scan.scanId, "failed")
                     }
                 } catch (e: IOException) {
@@ -118,8 +121,10 @@ class SyncRepository(
                 } catch (e: HttpException) {
                     // 404 means the backend doesn't recognize scan_id yet, despite our local
                     // ordering gate - leave pending rather than failed, it may resolve once
-                    // server-side state catches up. Other 4xx won't succeed on retry.
-                    if (e.code() in 400..499 && e.code() != 404) {
+                    // server-side state catches up. 408/429 can indicate a transient or
+                    // rate-limited backend rather than bad data, so also leave those pending -
+                    // matches pushPendingScans() above. Other 4xx won't succeed on retry.
+                    if (e.code() in 400..499 && e.code() !in setOf(404, 408, 429)) {
                         escalationDao.updateSyncStatus(escalation.escalationId, "failed")
                     }
                 } catch (e: IOException) {
@@ -156,6 +161,9 @@ class SyncRepository(
                         // escalation_id not yet known server-side: leave pending, it may
                         // resolve once the escalation itself finishes syncing.
                         404 -> Unit
+                        // Transient/rate-limited backend rather than bad data - leave
+                        // pending, matches pushPendingScans()/pushPendingEscalations().
+                        408, 429 -> Unit
                         else -> ratingDao.updateSyncStatus(rating.ratingId, "failed")
                     }
                 } catch (e: IOException) {
